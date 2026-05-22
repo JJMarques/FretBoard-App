@@ -9,7 +9,6 @@ import {
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { INSTRUMENTS } from '@/constants/instruments';
-import { create } from 'domain';
 
 export const instrumentEnum = pgEnum('instrument', INSTRUMENTS);
 
@@ -40,7 +39,7 @@ export const sessions = pgTable('sessions', {
     notes: text('notes'),
     mediaUrl: text('media_url'),
     mediaType: text('media_type'),
-    CreatedAt: timestamp('created_at').defaultNow().notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
 export const sessionLikes = pgTable('session_likes', {
