@@ -1,5 +1,6 @@
 import { getFeed } from "@/actions/sessions";
 import FeedSkeleton from "@/components/skeletons/FeedSkeleton";
+import SessionCard from "@/components/SessionCard";
 import { Suspense } from "react";
 
 async function FeedSessions() {
