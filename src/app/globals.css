@@ -27,3 +27,7 @@
     --color-error-bg: #1c0a0a;
   }
 }
+
+@utility max-w-content {
+  max-width: 860px;
+}

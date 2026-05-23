@@ -1,14 +1,15 @@
-import { getFeed } from "@/actions/sessions";
+import { getGlobalFeed } from "@/actions/sessions"
+import SessionCard from "@/components/SessionCard";
 import FeedSkeleton from "@/components/skeletons/FeedSkeleton";
 import { Suspense } from "react";
 
-async function FeedSessions() {
-    const sessions = await getFeed();
-
+async function GlobalFeedSessions() {
+    const sessions = await getGlobalFeed();
+    
     if(sessions.length === 0) {
-        return (
-            <p className="text-text-secondary text-sm">
-                No sessions yet. Follow some musicians to see their sessions here.
+        return(
+            <p  className="text-text-secondary text-sm">
+                No sessions yet. Be the first to share!
             </p>
         );
     }
@@ -19,23 +20,20 @@ async function FeedSessions() {
                 <SessionCard key={session.id} session={session} />
             ))}
         </div>
-    )
+    );
+};
 
-}
-
-export default function FeedPage() {
-
+export default function ExplorePage() {
     return(
         <main className="min-h-screen bg-background">
             <div className="max-w-content mx-auto px-4 py-12">
                 <h1 className="text-2x1 font-semibold text-text-primary mb-8">
-                    Your Feed
+                    Explore
                 </h1>
                 <Suspense fallback={<FeedSkeleton />}>
-                    <FeedSessions />
+                    <GlobalFeedSessions />
                 </Suspense>
             </div>
         </main>
     )
-}    
-    
+}
