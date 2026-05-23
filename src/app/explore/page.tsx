@@ -1,7 +1,11 @@
-import { getGlobalFeed } from "@/actions/sessions"
-import SessionCard from "@/components/SessionCard";
-import FeedSkeleton from "@/components/skeletons/FeedSkeleton";
 import { Suspense } from "react";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from 'next/navigation';
+import { getAuthenticatedUser, getFollowingIds } from "@/actions/follows";
+import { getGlobalFeed } from "@/actions/sessions";
+import SessionCard from "@/components/SessionCard";
+import SearchBar from "@/components/SearchBar";
+import FeedSkeleton from "@/components/skeletons/FeedSkeleton";
 
 async function GlobalFeedSessions() {
     const sessions = await getGlobalFeed();
@@ -23,13 +27,25 @@ async function GlobalFeedSessions() {
     );
 };
 
-export default function ExplorePage() {
+export default async function ExplorePage() {
+    const { userId: clerkId } = await auth();
+    if (!clerkId) redirect('/sign-in');
+
+    const user = await getAuthenticatedUser(clerkId);
+    if(!user) redirect('/sign-in');
+
+    const followingIds = await getFollowingIds(user.id)
+    
     return(
         <main className="min-h-screen bg-background">
             <div className="max-w-content mx-auto px-4 py-12">
                 <h1 className="text-2x1 font-semibold text-text-primary mb-8">
                     Explore
                 </h1>
+                <SearchBar 
+                    currentUserId={user.id}
+                    followingIds={followingIds}
+                />
                 <Suspense fallback={<FeedSkeleton />}>
                     <GlobalFeedSessions />
                 </Suspense>

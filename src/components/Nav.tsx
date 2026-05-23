@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { UserButton, Show, SignInButton, SignUpButton } from '@clerk/nextjs';
-import { Suspense } from 'react';
 
 export default function Nav() {
   return (

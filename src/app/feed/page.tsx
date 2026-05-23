@@ -2,6 +2,7 @@ import { getFeed } from "@/actions/sessions";
 import FeedSkeleton from "@/components/skeletons/FeedSkeleton";
 import SessionCard from "@/components/SessionCard";
 import { Suspense } from "react";
+import Link from "next/link";
 
 async function FeedSessions() {
     const sessions = await getFeed();
@@ -9,7 +10,7 @@ async function FeedSessions() {
     if(sessions.length === 0) {
         return (
             <p className="text-text-secondary text-sm">
-                No sessions yet. Follow some musicians to see their sessions here.
+                No sessions yet. <Link href="/explore" className="font-semibold text-text-primary">Follow some musicians</Link> to see their sessions here.
             </p>
         );
     }

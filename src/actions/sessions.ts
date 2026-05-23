@@ -43,7 +43,7 @@ export async function createSession(
     const { userId: clerkId } = await auth();
 
     if(!clerkId) {
-        return { error: 'Necessita de estar autenticado.' };
+        return { error: 'Not authenticated.' };
     };
 
     const user = await db
@@ -52,9 +52,7 @@ export async function createSession(
             .where(eq(users.clerkId, clerkId))
             .limit(1);    
 
-    if(!user[0]) {
-        return { error: 'Utilizador não encontrado.' };
-    };  
+    if(!user[0]) return { error: 'User not Found.' };
 
     const result = createSessionSchema.safeParse({ 
         instrument, 
