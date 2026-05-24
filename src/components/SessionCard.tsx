@@ -1,5 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
+import LikeButton from "./LikeButton";
+import MediaPlayer from "./MediaPlayer";
 
 interface SessionCardProps {
   session: {
@@ -16,10 +18,16 @@ interface SessionCardProps {
       username: string;
       avatarUrl: string | null;
     };
+    likes: { userId:string }[];
+    comments: { id: string }[];
   };
+  currentUserId: string;
+  path?: string;
 };
 
-export default function SessionCard({ session }: SessionCardProps) {
+export default function SessionCard({ session, currentUserId, path }: SessionCardProps) {
+    const isLiked = session.likes.some(l => l.userId === currentUserId);
+
     return(
         <Link href={`/sessions/${session.id}`}>
             <div className="p-4 bg-surface rounded-lg border border-border hover:border-accent transition-colors cursor-pointer">
@@ -39,29 +47,36 @@ export default function SessionCard({ session }: SessionCardProps) {
                         {session.notes}
                     </p>
                 )}
-                {session.mediaUrl && (
-                    <div className="mb-3">
-                        {session.mediaType === 'audio' ? (
-                            <audio controls src={session.mediaUrl} className="w-full h-8" />
-                        ) : (
-                            <video controls src={session.mediaUrl} className="w-full rounded-md max-h-48" />
-                        )}
-                    </div>
+                {session.mediaUrl && session.mediaType && (
+                    <MediaPlayer mediaUrl={session.mediaUrl} mediaType={session.mediaType} />
                 )}
-                <div className="flex items-center gap-2 mt-2">
-                    {session.user.avatarUrl && (
-                        <Image 
-                            src={session.user.avatarUrl}
-                            alt={session.user.name}
-                            width={20}
-                            height={20}
-                            className="rounded-full"
+                <div className="flex items-center justify-between mt-3">
+                    <div className="flex items-center gap-2">
+                        {session.user.avatarUrl && (
+                            <Image 
+                                src={session.user.avatarUrl}
+                                alt={session.user.name}
+                                width={20}
+                                height={20}
+                                className="rounded-full"
+                            />
+                        )}
+                        <p className="text-text-secondary text-xs">{session.user.name}</p>
+                        <p className="text-text-secondary text-xs">
+                            · {new Date(session.createdAt).toLocaleDateString('en-GB')}
+                        </p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <LikeButton
+                            sessionId={session.id}
+                            initialLikes={session.likes.length}
+                            isLiked={isLiked}
+                            path={path}
                         />
-                    )}
-                    <p className="text-text-secondary text-xs">{session.user.name}</p>
-                    <p className="text-text-secondary text-xs">
-                        · {new Date(session.createdAt).toLocaleDateString('en-GB')}
-                    </p>
+                        <span className="text-text-secondary text-xs">
+                        💬 {session.comments.length}
+                        </span>
+                    </div>
                 </div>
             </div>
         </Link>

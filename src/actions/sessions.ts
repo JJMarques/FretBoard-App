@@ -76,7 +76,7 @@ export async function createSession(
         };
     }
 
-    await db.insert(sessions).values({
+    const newSession = await db.insert(sessions).values({
         userId: user[0].id,
         instrument: result.data.instrument as Instrument,
         title: result.data.title,
@@ -84,10 +84,10 @@ export async function createSession(
         notes: result.data.notes ?? null,
         mediaUrl: result.data.mediaUrl ?? null,
         mediaType: result.data.mediaType ?? null,
-    });
+    }).returning({ id: sessions.id });
 
     revalidatePath('/feed');
-    return { success: true };
+    return { success: true, sessionId: newSession[0].id };
 };
 
 export async function getSessions() {
@@ -129,10 +129,16 @@ export async function getSessionById(sessionId: string) {
         return await db.query.sessions.findFirst({
             where: (sessions, { eq, and }) => and(
                 eq(sessions.id, sessionId),
-                eq(sessions.userId, user[0].id)
             ),
             with: {
                 user: true,
+                likes: {
+                    with: { user: true },
+                },
+                comments: {
+                    with: { user: true },
+                    orderBy: (comments, {asc}) => [asc(comments.createdAt)],
+                },
             },
         });
     } catch {
@@ -230,6 +236,8 @@ export async function getGlobalFeed() {
         orderBy: (sessions, { desc }) => [desc(sessions.createdAt)],
         with: {
             user: true,
+            likes: true,
+            comments: true,
         },
     });
 };
@@ -253,13 +261,20 @@ export async function getFeed() {
         .where(eq(follows.followerId, user[0].id));
 
     const followingIds = following.map(f => f.followingId);
-    if (followingIds.length === 0) return [];
 
     return await db.query.sessions.findMany({
-        where: (sessions, { inArray }) => inArray(sessions.userId, followingIds),
+        where: (sessions, { inArray, or, eq }) => 
+            followingIds.length > 0 ? 
+            or(
+                inArray(sessions.userId, followingIds),
+                eq(sessions.userId, user[0].id),
+            ) : 
+            eq(sessions.userId, user[0].id),
         orderBy: (sessions, { desc }) => [desc(sessions.createdAt)],
         with: {
             user: true,
+            likes: true,
+            comments: true,
         },
     });
 };

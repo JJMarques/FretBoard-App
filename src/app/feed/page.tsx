@@ -1,10 +1,13 @@
+import { Suspense } from "react";
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
+import Link from "next/link";
 import { getFeed } from "@/actions/sessions";
+import { getAuthenticatedUser } from '@/actions/follows';
 import FeedSkeleton from "@/components/skeletons/FeedSkeleton";
 import SessionCard from "@/components/SessionCard";
-import { Suspense } from "react";
-import Link from "next/link";
 
-async function FeedSessions() {
+async function FeedSessions({ currentUserId }: { currentUserId: string }) {
     const sessions = await getFeed();
 
     if(sessions.length === 0) {
@@ -18,14 +21,19 @@ async function FeedSessions() {
     return(
         <div className="flex flex-col gap-3">
             {sessions.map((session) => (
-                <SessionCard key={session.id} session={session} />
+                <SessionCard key={session.id} session={session} currentUserId={currentUserId} path="/feed" />
             ))}
         </div>
     )
 
 }
 
-export default function FeedPage() {
+export default async function FeedPage() {
+    const { userId: clerkId } = await auth();
+    if (!clerkId) redirect('/sign-in');
+
+    const user = await getAuthenticatedUser(clerkId);
+    if (!user) redirect('/sign-in');
 
     return(
         <main className="min-h-screen bg-background">
@@ -34,7 +42,7 @@ export default function FeedPage() {
                     Your Feed
                 </h1>
                 <Suspense fallback={<FeedSkeleton />}>
-                    <FeedSessions />
+                    <FeedSessions currentUserId={user.id} />
                 </Suspense>
             </div>
         </main>

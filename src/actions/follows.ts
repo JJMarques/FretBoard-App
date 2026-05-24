@@ -6,7 +6,7 @@ import { users, follows } from "@/db/schema";
 import { eq, and, or, ilike } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-export async function followUser(followingId:string, path: string) {
+export async function followUser(followingId:string, path: string="/explore") {
     const { userId: clerkId } = await auth();
     
         if(!clerkId) {
@@ -31,7 +31,7 @@ export async function followUser(followingId:string, path: string) {
         return { success: true };
 };
 
-export async function unfollowUser(followingId: string, path: string) {
+export async function unfollowUser(followingId: string, path: string="/explore") {
     const { userId: clerkId } = await auth();
     
         if(!clerkId) {

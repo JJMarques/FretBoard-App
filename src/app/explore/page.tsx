@@ -7,7 +7,7 @@ import SessionCard from "@/components/SessionCard";
 import SearchBar from "@/components/SearchBar";
 import FeedSkeleton from "@/components/skeletons/FeedSkeleton";
 
-async function GlobalFeedSessions() {
+async function GlobalFeedSessions({ currentUserId }: { currentUserId: string }) {
     const sessions = await getGlobalFeed();
     
     if(sessions.length === 0) {
@@ -21,7 +21,7 @@ async function GlobalFeedSessions() {
     return(
         <div className="flex flex-col gap-3">
             {sessions.map((session) => (
-                <SessionCard key={session.id} session={session} />
+                <SessionCard key={session.id} session={session} currentUserId={currentUserId} path="/explore" />
             ))}
         </div>
     );
@@ -47,7 +47,7 @@ export default async function ExplorePage() {
                     followingIds={followingIds}
                 />
                 <Suspense fallback={<FeedSkeleton />}>
-                    <GlobalFeedSessions />
+                    <GlobalFeedSessions currentUserId={user.id} />
                 </Suspense>
             </div>
         </main>
