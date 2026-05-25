@@ -1,5 +1,7 @@
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { UserButton, Show, SignInButton, SignUpButton } from '@clerk/nextjs';
+import NavUser from '@/components/NavUser';
 
 export default function Nav() {
   return (
@@ -11,17 +13,25 @@ export default function Nav() {
               Fretboard
             </Link>
             <Show when="signed-in">
-              <Link href="/sessions/new" className="text-text-secondary text-sm hover:text-text-primary transition-colors">
+              <Link
+                href="/sessions/new"
+                className="text-text-secondary text-sm hover:text-text-primary transition-colors"
+              >
                 New session
               </Link>
-              <Link href="/explore" className="text-text-secondary text-sm hover:text-text-primary transition-colors">
+              <Link
+                href="/explore"
+                className="text-text-secondary text-sm hover:text-text-primary transition-colors"
+              >
                 Explore
               </Link>
             </Show>
           </div>
           <div className="flex items-center gap-3">
             <Show when="signed-in">
-                <UserButton />
+              <Suspense fallback={null}>
+                <NavUser />
+              </Suspense>
             </Show>
             <Show when="signed-out">
               <SignInButton>

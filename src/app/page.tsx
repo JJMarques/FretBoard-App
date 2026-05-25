@@ -8,12 +8,10 @@ export default function Home() {
       </Show>
       <Show when="signed-out">
         <main className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
-          <div  className="max-w-content w-full text-center">
-            <h1 className="text-4xl font-semibold text-text-primary mb-4">
-              Fretboard
-            </h1>
+          <div className="max-w-content w-full text-center">
+            <h1 className="text-4xl font-semibold text-text-primary mb-4">Fretboard</h1>
             <p className="text-text-secondary text-lg mb-10">
-              Track your practice, share your progress, and connect <br /> 
+              Track your practice, share your progress, and connect <br />
               with musicians around the world.
             </p>
             <div className="flex gap-3 justify-center">

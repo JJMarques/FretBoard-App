@@ -29,7 +29,7 @@ export default function SessionForm() {
       Number(durationMinutes),
       notes || null,
       null,
-      null,
+      null
     );
 
     if (result?.errors) {

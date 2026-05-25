@@ -1,5 +1,5 @@
 export const INSTRUMENTS = [
-    // Cordas
+  // Cordas
   'bass',
   'electric_guitar',
   'acoustic_guitar',
@@ -36,4 +36,4 @@ export const INSTRUMENTS = [
   'other',
 ] as const;
 
-export type Instrument = typeof INSTRUMENTS[number];
+export type Instrument = (typeof INSTRUMENTS)[number];
