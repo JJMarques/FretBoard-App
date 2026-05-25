@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createSession } from '@/actions/sessions';
 import { INSTRUMENTS } from '@/constants/instruments';
+import MediaUpload from '@/components/MediaUpload';
 
 export default function SessionForm() {
   const router = useRouter();
@@ -11,6 +12,8 @@ export default function SessionForm() {
   const [instrument, setInstrument] = useState('bass');
   const [durationMinutes, setDurationMinutes] = useState('');
   const [notes, setNotes] = useState('');
+  const [mediaUrl, setMediaUrl] = useState<string | null>(null);
+  const [mediaType, setMediaType] = useState<string | null>(null);
   const [errors, setErrors] = useState<{
     title?: string;
     durationMinutes?: string;
@@ -20,6 +23,8 @@ export default function SessionForm() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    console.log('mediaUrl:', mediaUrl);
+    console.log('mediaType:', mediaType);
     setErrors({});
     setLoading(true);
 
@@ -28,8 +33,8 @@ export default function SessionForm() {
       title,
       Number(durationMinutes),
       notes || null,
-      null,
-      null
+      mediaUrl,
+      mediaType
     );
 
     if (result?.errors) {
@@ -99,6 +104,23 @@ export default function SessionForm() {
             className="w-full px-3 py-2 text-sm bg-background border border-border rounded-md outline-none focus:border-accent text-text-primary placeholder:text-text-secondary resize-none"
           />
           {errors.notes && <p className="text-xs text-error">{errors.notes}</p>}
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label className="text-text-primary text-sm font-medium">
+            Media <span className="text-text-secondary font-normal">(optional)</span>
+          </label>
+          <MediaUpload
+            onUploadComplete={(url, type) => {
+              setMediaUrl(url);
+              setMediaType(type);
+            }}
+            onClear={() => {
+              setMediaUrl(null);
+              setMediaType(null);
+            }}
+            currentUrl={mediaUrl}
+          />
         </div>
 
         <button
