@@ -3,6 +3,8 @@ import { notFound, redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import { getAuthenticatedUser } from '@/actions/follows';
 import { getUserProfile } from '@/actions/profile';
+import { getUserStreak } from '@/actions/streaks';
+import StreakBadge from '@/components/StreakBadge';
 import SessionCard from '@/components/SessionCard';
 import FollowButton from '@/components/FollowButton';
 import EditableProfile from '@/components/EditableProfile';
@@ -27,6 +29,9 @@ export default async function ProfilePage({ params }: Props) {
   //The some() method of Array instances returns true if it finds an element
   // in the array that satisfies the provided testing function. Otherwise, it returns false.
   const isFollowing = profileUser.followers.some((f) => f.followerId === currentUser.id);
+
+  const streak = await getUserStreak(profileUser.id);
+  console.log('streak:' + streak);
 
   return (
     <main className="min-h-screen bg-background">
@@ -60,6 +65,14 @@ export default async function ProfilePage({ params }: Props) {
                 )}
               </div>
             </div>
+            {streak && (
+              <div>
+                <StreakBadge
+                  currentStreak={streak.currentStreak}
+                  longestStreak={streak.longestStreak}
+                />
+              </div>
+            )}
             {!isOwnProfile && (
               <FollowButton
                 followingId={profileUser.id}

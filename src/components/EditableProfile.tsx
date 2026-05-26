@@ -65,7 +65,7 @@ export default function EditableProfile({ name, bio, username }: EditableProfile
         </button>
         <button
           onClick={() => setEditing(false)}
-          className="px-3 py-1.5 border border-border text-text-secondary text-xs rounded-md"
+          className="px-3 py-1.5 border border-border text-text-secondary text-xs rounded-md cursor-pointer"
         >
           Cancel
         </button>

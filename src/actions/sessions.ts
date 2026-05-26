@@ -1,14 +1,14 @@
 'use server';
 
-import { db } from '@/db';
-import { sessions, users, follows } from '@/db/schema';
-import { eq, and, inArray, sum, count, desc } from 'drizzle-orm';
 import { auth } from '@clerk/nextjs/server';
 import { revalidatePath } from 'next/cache';
+import { eq, and, inArray, sum, count, desc } from 'drizzle-orm';
 import { z } from 'zod';
-
+import { db } from '@/db';
+import { sessions, users, follows, streaks } from '@/db/schema';
 import { INSTRUMENTS } from '@/constants/instruments';
 import { type Instrument } from '@/constants/instruments';
+import { calculateStreak } from '@/utils/calculateStreak';
 
 const createSessionSchema = z
   .object({
@@ -88,6 +88,34 @@ export async function createSession(
       mediaType: result.data.mediaType ?? null,
     })
     .returning({ id: sessions.id });
+
+  const allSessions = await db
+    .select({ createdAt: sessions.createdAt })
+    .from(sessions)
+    .where(eq(sessions.userId, user[0].id))
+    .orderBy(desc(sessions.createdAt));
+
+  const currentStreak = calculateStreak(allSessions.map((s) => s.createdAt));
+
+  const existing = await db.select().from(streaks).where(eq(streaks.userId, user[0].id)).limit(1);
+
+  if (existing[0]) {
+    await db
+      .update(streaks)
+      .set({
+        currentStreak,
+        longestStreak: Math.max(currentStreak, existing[0].longestStreak),
+        lastPractice: new Date(),
+      })
+      .where(eq(streaks.userId, user[0].id));
+  } else {
+    await db.insert(streaks).values({
+      userId: user[0].id,
+      currentStreak,
+      longestStreak: currentStreak,
+      lastPractice: new Date(),
+    });
+  }
 
   revalidatePath('/feed');
   return { success: true, sessionId: newSession[0].id };
