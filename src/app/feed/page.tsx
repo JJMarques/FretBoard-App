@@ -6,6 +6,7 @@ import { getFeed } from '@/actions/sessions';
 import { getAuthenticatedUser } from '@/actions/follows';
 import FeedSkeleton from '@/components/skeletons/FeedSkeleton';
 import SessionCard from '@/components/SessionCard';
+import { CirclePlus } from 'lucide-react';
 
 async function FeedSessions({ currentUserId }: { currentUserId: string }) {
   const sessions = await getFeed();
@@ -46,7 +47,16 @@ export default async function FeedPage() {
   return (
     <main className="min-h-screen bg-background">
       <div className="max-w-content mx-auto px-4 py-12">
-        <h1 className="text-2x1 font-semibold text-text-primary mb-8">Your Feed</h1>
+        <div className="flex justify-between mb-8 items-center">
+          <h1 className="text-2x1 font-semibold text-text-primary">Your Feed</h1>
+          <Link
+            href="/sessions/new"
+            className=" flex items-center text-text-secondary text-sm hover:text-text-primary transition-colors"
+          >
+            <CirclePlus size={18} />
+            &nbsp;Add Session
+          </Link>
+        </div>
         <Suspense fallback={<FeedSkeleton />}>
           <FeedSessions currentUserId={user.id} />
         </Suspense>

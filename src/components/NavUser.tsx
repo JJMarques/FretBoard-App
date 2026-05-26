@@ -3,6 +3,7 @@ import { auth } from '@clerk/nextjs/server';
 import { getAuthenticatedUser } from '@/actions/follows';
 import Link from 'next/link';
 import { UserButton, Show } from '@clerk/nextjs';
+import ThemeToggle from './ThemeToggle';
 
 export default async function NavUser() {
   const { userId: clerkId } = await auth();
@@ -20,6 +21,7 @@ export default async function NavUser() {
         Profile
       </Link>
       <UserButton />
+      <ThemeToggle />
     </Show>
   );
 }

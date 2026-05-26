@@ -7,7 +7,7 @@ interface MediaPlayerProps {
 
 export default function MediaPlayer({ mediaUrl, mediaType }: MediaPlayerProps) {
   return (
-    <div className="mb-3" onClick={(e) => e.stopPropagation()}>
+    <div className="mb-8" onClick={(e) => e.stopPropagation()}>
       {mediaType === 'audio' ? (
         <audio controls src={mediaUrl} className="w-full h-8" />
       ) : (

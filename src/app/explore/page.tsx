@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import Link from 'next/link';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { getAuthenticatedUser, getFollowingIds } from '@/actions/follows';
@@ -6,6 +7,7 @@ import { getGlobalFeed } from '@/actions/sessions';
 import SessionCard from '@/components/SessionCard';
 import SearchBar from '@/components/SearchBar';
 import FeedSkeleton from '@/components/skeletons/FeedSkeleton';
+import { CirclePlus } from 'lucide-react';
 
 async function GlobalFeedSessions({ currentUserId }: { currentUserId: string }) {
   const sessions = await getGlobalFeed();
@@ -40,7 +42,16 @@ export default async function ExplorePage() {
   return (
     <main className="min-h-screen bg-background">
       <div className="max-w-content mx-auto px-4 py-12">
-        <h1 className="text-2x1 font-semibold text-text-primary mb-8">Explore</h1>
+        <div className="flex justify-between mb-8 items-center">
+          <h1 className="text-2x1 font-semibold text-text-primary">Explore</h1>
+          <Link
+            href="/sessions/new"
+            className=" flex items-center text-text-secondary text-sm hover:text-text-primary transition-colors"
+          >
+            <CirclePlus size={18} />
+            &nbsp;Add Session
+          </Link>
+        </div>
         <SearchBar currentUserId={user.id} followingIds={followingIds} />
         <Suspense fallback={<FeedSkeleton />}>
           <GlobalFeedSessions currentUserId={user.id} />

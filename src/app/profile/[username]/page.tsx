@@ -23,15 +23,12 @@ export default async function ProfilePage({ params }: Props) {
   if (!currentUser) redirect('/sign-in');
 
   const profileUser = await getUserProfile(username);
-
   if (!profileUser) notFound();
+
   const isOwnProfile = currentUser.id === profileUser.id;
-  //The some() method of Array instances returns true if it finds an element
-  // in the array that satisfies the provided testing function. Otherwise, it returns false.
   const isFollowing = profileUser.followers.some((f) => f.followerId === currentUser.id);
 
   const streak = await getUserStreak(profileUser.id);
-  console.log('streak:' + streak);
 
   return (
     <main className="min-h-screen bg-background">

@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
-import { UserButton, Show, SignInButton, SignUpButton } from '@clerk/nextjs';
+import { Show, SignInButton, SignUpButton } from '@clerk/nextjs';
 import NavUser from '@/components/NavUser';
 
 export default function Nav() {
@@ -14,10 +14,10 @@ export default function Nav() {
             </Link>
             <Show when="signed-in">
               <Link
-                href="/sessions/new"
+                href="/dashboard"
                 className="text-text-secondary text-sm hover:text-text-primary transition-colors"
               >
-                New session
+                Dashboard
               </Link>
               <Link
                 href="/explore"

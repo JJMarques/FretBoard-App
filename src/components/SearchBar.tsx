@@ -3,6 +3,7 @@ import { searchUsers } from '@/actions/follows';
 import { useState } from 'react';
 import FollowButton from './FollowButton';
 import Image from 'next/image';
+import { Search } from 'lucide-react';
 
 interface User {
   id: string;
@@ -34,7 +35,8 @@ export default function SearchBar({ currentUserId, followingIds }: SearchBarProp
   }
 
   return (
-    <div className="relative mb-8">
+    <div className="relative flex items-center mb-8">
+      <Search size={25} className="text-text-primary mr-4" />
       <input
         type="text"
         placeholder="Search for Musicians...."
