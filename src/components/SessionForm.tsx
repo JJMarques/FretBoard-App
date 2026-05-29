@@ -23,8 +23,6 @@ export default function SessionForm() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log('mediaUrl:', mediaUrl);
-    console.log('mediaType:', mediaType);
     setErrors({});
     setLoading(true);
 

@@ -72,7 +72,7 @@ export default function CommentSection({
           disabled={loading || !content.trim()}
           className="px-4 py-2 bg-accent text-background text-sm font-medium rounded-md disabled:opacity-40 cursor-pointer"
         >
-          {loading ? '...' : 'Post'}
+          {loading ? <div className="loader" /> : 'Post'}
         </button>
       </form>
 
