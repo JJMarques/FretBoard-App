@@ -28,6 +28,7 @@ export default function Nav() {
                 >
                   Explore
                 </Link>
+                <ThemeToggle />
               </Show>
             </div>
           </div>
@@ -42,24 +43,25 @@ export default function Nav() {
             <Show when="signed-out">
               <div className="hidden md:flex items-center gap-3">
                 <SignInButton>
-                  <button className="text-text-secondary text-sm hover:text-text-primary transition-colors">
+                  <button className="text-text-secondary text-sm hover:text-text-primary transition-colors cursor-pointer">
                     Sign in
                   </button>
                 </SignInButton>
                 <SignUpButton>
-                  <button className="px-3 py-1.5 bg-accent text-white text-sm rounded-md">
+                  <button className="px-3 py-1.5 bg-accent text-background text-sm rounded-md cursor pointer">
                     Get started
                   </button>
                 </SignUpButton>
               </div>
+              <ThemeToggle />
             </Show>
-            <ThemeToggle />
             <div className="md:hidden flex items-center gap-3">
               <Show when="signed-in">
                 <Suspense fallback={null}>
                   <NavUser />
                 </Suspense>
               </Show>
+              <ThemeToggle />
               <MobileMenu />
             </div>
           </div>
