@@ -2,6 +2,8 @@ import { Suspense } from 'react';
 import Link from 'next/link';
 import { Show, SignInButton, SignUpButton } from '@clerk/nextjs';
 import NavUser from '@/components/NavUser';
+import MobileMenu from './MobileMenu';
+import ThemeToggle from './ThemeToggle';
 
 export default function Nav() {
   return (
@@ -12,39 +14,54 @@ export default function Nav() {
             <Link href="/feed" className="text-text-primary text-sm font-semibold">
               Fretboard
             </Link>
-            <Show when="signed-in">
-              <Link
-                href="/dashboard"
-                className="text-text-secondary text-sm hover:text-text-primary transition-colors"
-              >
-                Dashboard
-              </Link>
-              <Link
-                href="/explore"
-                className="text-text-secondary text-sm hover:text-text-primary transition-colors"
-              >
-                Explore
-              </Link>
-            </Show>
+            <div className="hidden md:flex items-center gap-6">
+              <Show when="signed-in">
+                <Link
+                  href="/dashboard"
+                  className="text-text-secondary text-sm hover:text-text-primary transition-colors"
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  href="/explore"
+                  className="text-text-secondary text-sm hover:text-text-primary transition-colors"
+                >
+                  Explore
+                </Link>
+              </Show>
+            </div>
           </div>
           <div className="flex items-center gap-3">
             <Show when="signed-in">
-              <Suspense fallback={null}>
-                <NavUser />
-              </Suspense>
+              <div className="hidden md:block">
+                <Suspense fallback={null}>
+                  <NavUser />
+                </Suspense>
+              </div>
             </Show>
             <Show when="signed-out">
-              <SignInButton>
-                <button className="text-text-secondary text-sm hover:text-text-primary transition-colors cursor-pointer">
-                  Sign in
-                </button>
-              </SignInButton>
-              <SignUpButton>
-                <button className="px-3 py-1.5 bg-accent text-background text-sm rounded-md cursor-pointer">
-                  Get started
-                </button>
-              </SignUpButton>
+              <div className="hidden md:flex items-center gap-3">
+                <SignInButton>
+                  <button className="text-text-secondary text-sm hover:text-text-primary transition-colors">
+                    Sign in
+                  </button>
+                </SignInButton>
+                <SignUpButton>
+                  <button className="px-3 py-1.5 bg-accent text-white text-sm rounded-md">
+                    Get started
+                  </button>
+                </SignUpButton>
+              </div>
             </Show>
+            <ThemeToggle />
+            <div className="md:hidden flex items-center gap-3">
+              <Show when="signed-in">
+                <Suspense fallback={null}>
+                  <NavUser />
+                </Suspense>
+              </Show>
+              <MobileMenu />
+            </div>
           </div>
         </div>
       </div>
