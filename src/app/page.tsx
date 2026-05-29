@@ -7,7 +7,7 @@ export default function Home() {
         <meta httpEquiv="refresh" content="0;url=/feed" />
       </Show>
       <Show when="signed-out">
-        <main className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
+        <main className="min-h-screen flex flex-col items-center justify-center px-4">
           <div className="max-w-content w-full text-center">
             <h1 className="text-4xl font-semibold text-text-primary mb-4">Fretboard</h1>
             <p className="text-text-secondary text-lg mb-10">
@@ -21,7 +21,7 @@ export default function Home() {
                 </button>
               </SignUpButton>
               <SignInButton>
-                <button className="px-6 py-2.5 border border-border text-text-primary text-sm font-medium rounded-md cursor-pointer">
+                <button className="px-6 py-2.5 bg-background/60 backdrop-blur-sm border border-border text-text-primary/80 text-sm font-medium rounded-md transition-colors hover:bg-surface hover:text-text-primary cursor-pointer">
                   Sign in
                 </button>
               </SignInButton>

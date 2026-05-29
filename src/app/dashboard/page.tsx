@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { getDashboardStats } from '@/actions/dashboard';
 import SessionCard from '@/components/SessionCard';
 import { Clock, Music, Flame } from 'lucide-react';
+import FeedSkeleton from '@/components/skeletons/FeedSkeleton';
 
 async function DashboardContent() {
   const stats = await getDashboardStats();
@@ -11,26 +12,26 @@ async function DashboardContent() {
   return (
     <div className="flex flex-col gap-8">
       <div className="grid grid-cols-3 gap-4">
-        <div className="p-4 bg-surface rounded-lg border border-border">
+        <div className="p-4 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
           <div className="flex items-center gap-2 mb-2">
             <Clock size={14} className="text-text-secondary" />
             <p className="text-text-secondary text-xs">Total minutes</p>
           </div>
-          <p className="text-text-primary text-2xl font-semibold">{stats.totalMinutes}</p>
+          <p className="text-text-primary text-lg font-semibold">{stats.totalMinutes}</p>
         </div>
-        <div className="p-4 bg-surface rounded-lg border border-border">
+        <div className="p-4 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
           <div className="flex items-center gap-2 mb-2">
             <Music size={14} className="text-text-secondary" />
             <p className="text-text-secondary text-xs">Total sessions</p>
           </div>
-          <p className="text-text-primary text-2xl font-semibold">{stats.totalSessions}</p>
+          <p className="text-text-primary text-lg font-semibold">{stats.totalSessions}</p>
         </div>
-        <div className="p-4 bg-surface rounded-lg border border-border">
+        <div className="p-4 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
           <div className="flex items-center gap-2 mb-2">
             <Flame size={14} className="text-text-secondary" />
             <p className="text-text-secondary text-xs">Current streak</p>
           </div>
-          <p className="text-text-primary text-2xl font-semibold">{stats.currentStreak} days</p>
+          <p className="text-text-primary text-lg font-semibold">{stats.currentStreak} days</p>
         </div>
       </div>
 
@@ -57,10 +58,10 @@ async function DashboardContent() {
 
 export default function DashboardPage() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen">
       <div className="max-w-content mx-auto px-4 py-12">
-        <h1 className="font-semibold text-text-primary mb-8">Dashboard</h1>
-        <Suspense fallback={<p className="text-text-secondary text-sm">Loading...</p>}>
+        <h1 className="text-lg font-semibold text-text-primary mb-8">Dashboard</h1>
+        <Suspense fallback={<FeedSkeleton />}>
           <DashboardContent />
         </Suspense>
       </div>

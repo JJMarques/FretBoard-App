@@ -31,50 +31,52 @@ export default async function ProfilePage({ params }: Props) {
   const streak = await getUserStreak(profileUser.id);
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen">
       <div className="max-w-content mx-auto px-4 py-12">
-        <div className="bg-surface rounded-lg border border-border p-6 mb-6">
-          <div className="flex items-start justify-between">
-            <div className="flex items-center gap-4">
-              {profileUser.avatarUrl && (
-                <Image
-                  src={profileUser.avatarUrl}
-                  alt={profileUser.name}
-                  width={64}
-                  height={64}
-                  className="rounded-full"
+        <div className="bg-background/60 backdrop-blur-sm border border-border/50 rounded-lg p-6 mb-6">
+          <div className="flex flex-col gap-4">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-center gap-4 min-w-0">
+                {profileUser.avatarUrl && (
+                  <Image
+                    src={profileUser.avatarUrl}
+                    alt={profileUser.name}
+                    width={64}
+                    height={64}
+                    className="rounded-full flex-shrink-0"
+                  />
+                )}
+                <div className="min-w-0">
+                  {isOwnProfile ? (
+                    <EditableProfile
+                      name={profileUser.name}
+                      bio={profileUser.bio}
+                      username={profileUser.username}
+                    />
+                  ) : (
+                    <div>
+                      <h1 className="text-text-primary text-xl font-semibold truncate">
+                        {profileUser.name}
+                      </h1>
+                      {profileUser.bio && (
+                        <p className="text-text-secondary text-sm mt-1">{profileUser.bio}</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+              {!isOwnProfile && (
+                <FollowButton
+                  followingId={profileUser.id}
+                  isFollowing={isFollowing}
+                  path={`/profile/${username}`}
                 />
               )}
-              <div>
-                {isOwnProfile ? (
-                  <EditableProfile
-                    name={profileUser.name}
-                    bio={profileUser.bio}
-                    username={profileUser.username}
-                  />
-                ) : (
-                  <div>
-                    <h1 className="text-text-primary text-xl font-semibold">{profileUser.name}</h1>
-                    {profileUser.bio && (
-                      <p className="text-text-secondary text-sm mt-1">{profileUser.bio}</p>
-                    )}
-                  </div>
-                )}
-              </div>
             </div>
             {streak && (
-              <div>
-                <StreakBadge
-                  currentStreak={streak.currentStreak}
-                  longestStreak={streak.longestStreak}
-                />
-              </div>
-            )}
-            {!isOwnProfile && (
-              <FollowButton
-                followingId={profileUser.id}
-                isFollowing={isFollowing}
-                path={`/profile/${username}`}
+              <StreakBadge
+                currentStreak={streak.currentStreak}
+                longestStreak={streak.longestStreak}
               />
             )}
           </div>

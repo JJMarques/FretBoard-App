@@ -49,7 +49,7 @@ export default function SessionForm() {
   }
 
   return (
-    <div className="p-6 bg-surface rounded-lg border border-border">
+    <div className="p-6 rounded-lg bg-background/60 backdrop-blur-sm border border-border/50">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
           <label className="text-text-primary text-sm font-medium">Title</label>
@@ -128,7 +128,7 @@ export default function SessionForm() {
           disabled={loading}
           className="w-full py-2 px-4 bg-accent text-background text-sm font-medium rounded-md disabled:opacity-50 cursor-pointer"
         >
-          {loading ? 'Saving...' : 'Save session'}
+          {loading ? <span className="loader" /> : 'Save session'}
         </button>
       </form>
     </div>

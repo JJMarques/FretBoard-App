@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { likeSession, unlikeSession } from '@/actions/social';
-import { Heart } from 'lucide-react';
+import { ThumbsUp } from 'lucide-react';
 
 interface LikeButtonProps {
   sessionId: string;
@@ -37,11 +37,14 @@ export default function LikeButton({ sessionId, initialLikes, isLiked, path }: L
   return (
     <button
       onClick={handleClick}
-      className={`flex items-center gap-1.5 text-sm transition-colors cursor-pointer ${
+      className={`flex items-center justify-center bg-background px-2 h-10 min-w-15 border border-border rounded-md gap-1.5 transition-colors cursor-pointer ${
         liked ? 'text-favorite' : 'text-text-secondary hover:text-text-primary'
       }`}
     >
-      <Heart size={16} className={liked ? 'fill-favorite text-favorite' : 'text-text-secondary'} />
+      <ThumbsUp
+        size={16}
+        className={liked ? 'fill-favorite text-favorite' : 'text-text-secondary'}
+      />
       <span>{likes}</span>
     </button>
   );

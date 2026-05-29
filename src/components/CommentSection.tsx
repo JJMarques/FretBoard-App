@@ -65,7 +65,7 @@ export default function CommentSection({
           placeholder="Add a comment..."
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="flex-1 px-3 py-2 text-sm bg-surface border border-border rounded-md outline-none focus:border-accent text-text-primary placeholder:text-text-secondary"
+          className="flex-1 px-3 py-2 text-sm bg-background/60 backdrop-blur-sm border border-border/50 rounded-md outline-none focus:border-accent text-text-primary placeholder:text-text-secondary"
         />
         <button
           type="submit"

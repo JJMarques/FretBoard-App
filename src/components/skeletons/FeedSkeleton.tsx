@@ -2,7 +2,10 @@ export default function FeedSkeleton() {
   return (
     <div className="flex flex-col gap-3">
       {[1, 2, 3, 4, 5].map((i) => (
-        <div key={i} className="p-4 bg-surface rounded-lg border border-border">
+        <div
+          key={i}
+          className="p-4 bg-background/60 backdrop-blur-sm border border-border/50 rounded-lg border border-border"
+        >
           <div className="flex items-center justify-between mb-3">
             <div className="h-4 w-24 bg-background rounded animate-pulse border border-border" />
             <div className="h-3 w-12 bg-background rounded animate-pulse border border-border" />

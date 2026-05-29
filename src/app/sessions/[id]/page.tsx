@@ -6,8 +6,8 @@ import LikeButton from '@/components/LikeButton';
 import CommentSection from '@/components/CommentSection';
 import DeleteButton from '@/components/DeleteButton';
 import Image from 'next/image';
-import Link from 'next/link';
 import BackButton from '@/components/BackButton';
+import MediaPlayer from '@/components/MediaPlayer';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -29,10 +29,10 @@ export default async function SessionPage({ params }: Props) {
   const isOwner = session.userId === user.id;
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen">
       <div className="max-w-content mx-auto px-4 py-12">
         <BackButton />
-        <div className="bg-surface rounded-lg border border-border p-6 mb-6">
+        <div className="bg-background/60 backdrop-blur-sm border border-border/50 rounded-lg p-6 mb-6">
           <div className="flex items-start justify-between mb-4">
             <div>
               <h1 className="text-text-primary text-xl font-semibold mb-1">{session.title}</h1>
@@ -45,13 +45,9 @@ export default async function SessionPage({ params }: Props) {
 
           {session.notes && <p className="text-text-secondary text-sm mb-4">{session.notes}</p>}
 
-          {session.mediaUrl && (
+          {session.mediaUrl && session.mediaType && (
             <div className="mb-4">
-              {session.mediaType === 'audio' ? (
-                <audio controls src={session.mediaUrl} className="w-full" />
-              ) : (
-                <video controls src={session.mediaUrl} className="w-full rounded-md" />
-              )}
+              <MediaPlayer mediaUrl={session.mediaUrl} mediaType={session.mediaType} />
             </div>
           )}
 
@@ -82,7 +78,7 @@ export default async function SessionPage({ params }: Props) {
           </div>
         </div>
 
-        <div className="bg-surface rounded-lg border border-border p-6">
+        <div className="bg-background/60 backdrop-blur-sm border border-border/50 rounded-lg p-6">
           <h2 className="text-text-primary text-base font-medium mb-4">
             Comments ({session.comments.length})
           </h2>

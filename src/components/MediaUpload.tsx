@@ -35,7 +35,9 @@ export default function MediaUpload({ onUploadComplete, onClear, currentUrl }: M
       headers: { 'Content-Type': file.type },
     });
 
-    const type = file.type.startsWith('audio') ? 'audio' : 'video';
+    const audioExtensions = ['.mp3', '.wav', '.ogg', '.flac', '.aac', '.m4a', '.mpeg'];
+    const extension = '.' + file.name.split('.').pop()?.toLowerCase();
+    const type = audioExtensions.includes(extension) ? 'audio' : 'video';
     onUploadComplete(publicUrl, type);
     setIsUploading(false);
   }

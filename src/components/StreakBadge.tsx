@@ -7,7 +7,7 @@ interface StreakBadgeProps {
 
 export default function StreakBadge({ currentStreak, longestStreak }: StreakBadgeProps) {
   return (
-    <div className="flex items-center gap-4 p-4 bg-surface rounded-lg border border-border">
+    <div className="flex items-center gap-4 p-4 bg-background/60 backdrop-blur-sm border border-border/50 rounded-lg">
       <div className="flex items-center gap-2">
         <Flame size={20} className={currentStreak > 0 ? 'text-favorite' : 'text-text-secondary'} />
         <div>

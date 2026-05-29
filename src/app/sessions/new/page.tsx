@@ -11,7 +11,7 @@ export default async function NewSessionPage() {
   if (!user) redirect('/sign-in');
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen">
       <div className="max-w-content mx-auto px-4 py-12">
         <h1 className="text-2xl font-semibold text-text-primary mb-8">New session</h1>
         <SessionForm />

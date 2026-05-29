@@ -5,7 +5,7 @@ import NavUser from '@/components/NavUser';
 
 export default function Nav() {
   return (
-    <nav className="border-b border-border bg-background">
+    <nav className="sticky top-0 z-50 border-b border-border bg-background/60 backdrop-blur-md">
       <div className="max-w-content mx-auto px-4">
         <div className="flex items-center justify-between h-14">
           <div className="flex items-center gap-6">

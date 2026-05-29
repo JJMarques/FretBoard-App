@@ -30,9 +30,9 @@ export default function EditableProfile({ name, bio, username }: EditableProfile
           <h1 className="text-text-primary text-xl font-semibold">{nameValue}</h1>
           <button
             onClick={() => setEditing(true)}
-            className="bg-background text-text-secondary p-1 rounded-md text-xs hover:text-text-primary transition-colors cursor-pointer"
+            className="bg-background text-text-secondary p-2 border border-border rounded-xl text-xs hover:text-text-primary transition-colors cursor-pointer"
           >
-            <Edit size={13} />
+            <Edit size={15} />
           </button>
         </div>
         {bioValue && <p className="text-text-secondary text-sm mt-1">{bioValue}</p>}

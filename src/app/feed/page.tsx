@@ -7,6 +7,7 @@ import { getAuthenticatedUser } from '@/actions/follows';
 import FeedSkeleton from '@/components/skeletons/FeedSkeleton';
 import SessionCard from '@/components/SessionCard';
 import { CirclePlus } from 'lucide-react';
+import AddSessionButton from '@/components/AddSessionButton';
 
 async function FeedSessions({ currentUserId }: { currentUserId: string }) {
   const sessions = await getFeed();
@@ -45,17 +46,11 @@ export default async function FeedPage() {
   if (!user) redirect('/sign-in');
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen">
       <div className="max-w-content mx-auto px-4 py-12">
         <div className="flex justify-between mb-8 items-center">
-          <h1 className="text-2x1 font-semibold text-text-primary">Your Feed</h1>
-          <Link
-            href="/sessions/new"
-            className=" flex items-center text-text-secondary text-sm hover:text-text-primary transition-colors"
-          >
-            <CirclePlus size={18} />
-            &nbsp;Add Session
-          </Link>
+          <h1 className="text-lg font-semibold text-text-primary">Your Feed</h1>
+          <AddSessionButton />
         </div>
         <Suspense fallback={<FeedSkeleton />}>
           <FeedSessions currentUserId={user.id} />

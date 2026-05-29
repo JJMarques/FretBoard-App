@@ -1,9 +1,10 @@
 'use client';
 import { searchUsers } from '@/actions/follows';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import FollowButton from './FollowButton';
 import Image from 'next/image';
 import { Search } from 'lucide-react';
+import Link from 'next/link';
 
 interface User {
   id: string;
@@ -21,6 +22,18 @@ export default function SearchBar({ currentUserId, followingIds }: SearchBarProp
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setResults([]);
+        setQuery('');
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   async function handleSearch(value: string) {
     setQuery(value);
@@ -35,14 +48,14 @@ export default function SearchBar({ currentUserId, followingIds }: SearchBarProp
   }
 
   return (
-    <div className="relative flex items-center mb-8">
+    <div ref={containerRef} className="relative flex items-center mb-8">
       <Search size={25} className="text-text-primary mr-4" />
       <input
         type="text"
         placeholder="Search for Musicians...."
         value={query}
         onChange={(e) => handleSearch(e.target.value)}
-        className="w-full px-4 py-2.5 text-sm bg-surface border border-border rounded-lg outline-none focus:border-accent text-text-primary placeholder:text-text-secondary"
+        className="w-full px-4 py-2.5 text-sm bg-background/60 backdrop-blur-sm border border-border/50 rounded-lg outline-none focus:border-accent text-text-primary placeholder:text-text-secondary"
       />
       {loading && <p className="text-text-secondary text-xs mt-2">Searching...</p>}
       {results.length > 0 && (
@@ -52,7 +65,7 @@ export default function SearchBar({ currentUserId, followingIds }: SearchBarProp
               key={user.id}
               className="flex items-center justify-between p-3 hover:bg-surface transition-colors border-b border-border last:border-0"
             >
-              <div className="flex items-center gap-3">
+              <Link href={`/profile/${user.username}`} className="flex items-center gap-3">
                 {user.avatarUrl && (
                   <Image
                     src={user.avatarUrl}
@@ -66,7 +79,7 @@ export default function SearchBar({ currentUserId, followingIds }: SearchBarProp
                   <p className="text-text-primary text-sm font-medium">{user.name}</p>
                   <p className="text-text-secondary text-xs">@{user.username}</p>
                 </div>
-              </div>
+              </Link>
               <FollowButton
                 followingId={user.id}
                 isFollowing={followingIds.includes(user.id)}
@@ -74,10 +87,8 @@ export default function SearchBar({ currentUserId, followingIds }: SearchBarProp
               />
             </div>
           ))}
-          ;
         </div>
       )}
-      ;
     </div>
   );
 }

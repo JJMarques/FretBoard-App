@@ -31,13 +31,13 @@ export default function FollowButton({ followingId, isFollowing, path }: FollowB
     <button
       onClick={handleClick}
       disabled={loading}
-      className={`px-4 py-1.5 text-sm font-medium rounded-md border transition-colors disabled:opacity-50 cursor-pointer ${
+      className={`px-4 py-1.5 min-w-20 text-sm font-medium rounded-md border transition-colors disabled:opacity-50 cursor-pointer ${
         following
-          ? 'bg-background text-text-primary border-border hover:border-accent'
+          ? 'bg-background text-text-primary border-border hover:bg-surface-hover'
           : 'bg-accent text-background border-accent'
       }`}
     >
-      {loading ? '...' : following ? 'Following' : 'Follow'}
+      {loading ? <span className="loader" /> : following ? 'Following' : 'Follow'}
     </button>
   );
 }
