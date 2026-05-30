@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { createComment, deleteComment } from '@/actions/social';
+import Link from 'next/link';
 
 interface Comment {
   id: string;
@@ -11,6 +12,7 @@ interface Comment {
   user: {
     id: string;
     name: string;
+    username: string;
     avatarUrl: string | null;
   };
 }
@@ -80,17 +82,25 @@ export default function CommentSection({
         {comments.map((comment) => (
           <div key={comment.id} className="flex items-start gap-3">
             {comment.user.avatarUrl && (
-              <Image
-                src={comment.user.avatarUrl}
-                alt={comment.user.name}
-                width={28}
-                height={28}
-                className="rounded-full flex-shrink-0"
-              />
+              <Link href={`/profile/${comment.user.username}`} onClick={(e) => e.stopPropagation()}>
+                <Image
+                  src={comment.user.avatarUrl}
+                  alt={comment.user.name}
+                  width={28}
+                  height={28}
+                  className="rounded-full flex-shrink-0"
+                />
+              </Link>
             )}
             <div className="flex-1">
               <div className="flex items-center justify-between">
-                <p className="text-text-primary text-xs font-medium">{comment.user.name}</p>
+                <Link
+                  href={`/profile/${comment.user.username}`}
+                  className="text-text-primary text-xs font-medium"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {comment.user.name}
+                </Link>
                 {comment.user.id === currentUserId && (
                   <button
                     onClick={() => handleDelete(comment.id)}

@@ -3,29 +3,21 @@ import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { getAuthenticatedUser, getFollowingIds } from '@/actions/follows';
 import { getGlobalFeed } from '@/actions/sessions';
-import SessionCard from '@/components/SessionCard';
 import SearchBar from '@/components/SearchBar';
 import FeedSkeleton from '@/components/skeletons/FeedSkeleton';
 import AddSessionButton from '@/components/AddSessionButton';
+import SessionFeed from '@/components/SessionFeed';
 
 async function GlobalFeedSessions({ currentUserId }: { currentUserId: string }) {
-  const sessions = await getGlobalFeed();
-
-  if (sessions.length === 0) {
-    return <p className="text-text-secondary text-sm">No sessions yet. Be the first to share!</p>;
-  }
+  const sessions = await getGlobalFeed(10, 0);
 
   return (
-    <div className="flex flex-col gap-3">
-      {sessions.map((session) => (
-        <SessionCard
-          key={session.id}
-          session={session}
-          currentUserId={currentUserId}
-          path="/explore"
-        />
-      ))}
-    </div>
+    <SessionFeed
+      initialSessions={sessions}
+      currentUserId={currentUserId}
+      path="/explore"
+      type="global"
+    />
   );
 }
 

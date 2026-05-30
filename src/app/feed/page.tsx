@@ -5,36 +5,19 @@ import Link from 'next/link';
 import { getFeed } from '@/actions/sessions';
 import { getAuthenticatedUser } from '@/actions/follows';
 import FeedSkeleton from '@/components/skeletons/FeedSkeleton';
-import SessionCard from '@/components/SessionCard';
-import { CirclePlus } from 'lucide-react';
 import AddSessionButton from '@/components/AddSessionButton';
+import SessionFeed from '@/components/SessionFeed';
 
 async function FeedSessions({ currentUserId }: { currentUserId: string }) {
-  const sessions = await getFeed();
-
-  if (sessions.length === 0) {
-    return (
-      <p className="text-text-secondary text-sm">
-        No sessions yet.{' '}
-        <Link href="/explore" className="font-semibold text-text-primary">
-          Follow some musicians
-        </Link>{' '}
-        to see their sessions here.
-      </p>
-    );
-  }
+  const sessions = await getFeed(10, 0);
 
   return (
-    <div className="flex flex-col gap-3">
-      {sessions.map((session) => (
-        <SessionCard
-          key={session.id}
-          session={session}
-          currentUserId={currentUserId}
-          path="/feed"
-        />
-      ))}
-    </div>
+    <SessionFeed
+      initialSessions={sessions}
+      currentUserId={currentUserId}
+      path="/feed"
+      type="feed"
+    />
   );
 }
 

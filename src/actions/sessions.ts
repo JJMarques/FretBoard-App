@@ -237,9 +237,11 @@ export async function updateSession(
   return { success: true };
 }
 
-export async function getGlobalFeed() {
+export async function getGlobalFeed(limit = 10, offset = 0) {
   return await db.query.sessions.findMany({
     orderBy: (sessions, { desc }) => [desc(sessions.createdAt)],
+    limit,
+    offset,
     with: {
       user: true,
       likes: true,
@@ -248,7 +250,7 @@ export async function getGlobalFeed() {
   });
 }
 
-export async function getFeed() {
+export async function getFeed(limit = 10, offset = 0) {
   const { userId: clerkId } = await auth();
 
   if (!clerkId) return [];
@@ -261,12 +263,28 @@ export async function getFeed() {
 
   const followingIds = following.map((f) => f.followingId);
 
+  if (followingIds.length === 0) {
+    return await db.query.sessions.findMany({
+      where: (sessions, { eq }) => eq(sessions.userId, user[0].id),
+      orderBy: (sessions, { desc }) => [desc(sessions.createdAt)],
+      limit,
+      offset,
+      with: {
+        user: true,
+        likes: true,
+        comments: true,
+      },
+    });
+  }
+
   return await db.query.sessions.findMany({
     where: (sessions, { inArray, or, eq }) =>
       followingIds.length > 0
         ? or(inArray(sessions.userId, followingIds), eq(sessions.userId, user[0].id))
         : eq(sessions.userId, user[0].id),
     orderBy: (sessions, { desc }) => [desc(sessions.createdAt)],
+    limit,
+    offset,
     with: {
       user: true,
       likes: true,
