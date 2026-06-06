@@ -32,7 +32,7 @@ export default function Nav() {
               </Show>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center gap-3">
             <Show when="signed-in">
               <div className="hidden md:block">
                 <Suspense fallback={null}>
@@ -41,7 +41,7 @@ export default function Nav() {
               </div>
             </Show>
             <Show when="signed-out">
-              <div className="hidden md:flex items-center gap-3">
+              <div className="hidden md:flex gap-3">
                 <SignInButton>
                   <button className="text-text-secondary text-sm hover:text-text-primary transition-colors cursor-pointer">
                     Sign in
@@ -52,8 +52,8 @@ export default function Nav() {
                     Get started
                   </button>
                 </SignUpButton>
+                <ThemeToggle />
               </div>
-              <ThemeToggle />
             </Show>
             <div className="md:hidden flex items-center gap-3">
               <Show when="signed-in">
