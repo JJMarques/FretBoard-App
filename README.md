@@ -113,7 +113,7 @@ streaks         — current and longest streak per user
 
 ```bash
 # Clone the repository
-git clone https://github.com/teu-username/fretboard.git
+git clone https://github.com/JJMarques/FretBoard-App
 cd fretboard
 
 # Install dependencies
